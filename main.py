@@ -1,12 +1,30 @@
+#Welcome to the program.
 print("Hello user of the energy consumption calculator")
 print("Let's begin the calculation\n")
 
+#Function: Validate Float values ​​for inputs.
+def get_float_input(message):
+    while True:
+        try:
+            return float(input(message))
+        except ValueError:
+            print('Invalid input. Please enter a valid number.')
+
+#Function: Validate Int values ​​for inputs.
+def get_int_input(message):
+    while True:
+        try:
+            return int(input(message))
+        except ValueError:
+            print('Invalid input. Please enter a valid number.')
+
+#Function: Energy consumption calculation formula
 def calculate_energy():
     appliance_name = input("What is the name of the calculating device? ")
-    power_watts = float(input("What is its power rating in Watts? "))
-    hours_per_day = int(input("How many hours per day of use? "))
-    days_per_month = int(input("How many days of use per month? "))
-    kwh_price = float(input("What is the price per kWh? "))
+    power_watts = get_float_input('What is its power rating in Watts? ')
+    hours_per_day = get_int_input('How many hours per day of use? ')
+    days_per_month = get_int_input('How many days of use per month? ')
+    kwh_price = get_float_input('What is the price per kWh? ')
 
     #Daily consumption (kWh/day)
 
@@ -29,7 +47,7 @@ def calculate_energy():
 
     return appliance_name, monthly_consumption, monthly_cost
 
-
+#Function: Main
 def main():
     appliances = []  # Made List
 
@@ -64,6 +82,6 @@ def main():
     print(f"Total Estimated Cost: R${total_cost:.2f}")
     print("========================")
 
-
 if __name__ == "__main__":
     main()
+
