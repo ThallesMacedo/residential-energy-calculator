@@ -51,36 +51,38 @@ def calculate_energy():
 def main():
     appliances = []  # Made List
 
-    # PRIMEIRA EXECUÇÃO
-    name, consumption, cost = calculate_energy()
+    while True:
+        print('===== Energy Consumption Calculator =====\n1 - Add appliance \n2 - View report \n3 - Exit')
+        choise = input('Choose an option:')
+        if choise == '1':
+            
+            name, consumption, cost = calculate_energy()
 
-    appliances.append({
-        "appliance_name": name,
-        "monthly_consumption": consumption,
-        "monthly_cost": cost
-    })
-
-    multiple_appliances = input("\nDo you want to add another appliance? (y/n)")
-
-    while multiple_appliances == "y":
-        name, consumption, cost = calculate_energy()
-
-        appliances.append({
+            appliances.append({
             "appliance_name": name,
             "monthly_consumption": consumption,
             "monthly_cost": cost
-        })
+                               })
+        elif choise == '2':
+            if not appliances:
+                print('The list is empty.')
+            else:
+                for appliance in appliances:
+                    print(f"\nAppliance: {appliance['appliance_name']}")
+                    print(f"Monthly Consumption: {appliance['monthly_consumption']:.2f} kWh")
+                    print(f"Monthly Cost: R${appliance['monthly_cost']:.2f}\n")
 
-        multiple_appliances = input("\nDo you want to add another appliance? (y/n)")
+        elif choise == '3':
+            break
+            
 
-    # Total final
-    total_consumption = sum(a["monthly_consumption"] for a in appliances)
-    total_cost = sum(a["monthly_cost"] for a in appliances)
+#total_consumption = sum(a["monthly_consumption"] for a in appliances)
+#total_cost = sum(a["monthly_cost"] for a in appliances)
 
-    print("\n===== HOUSE TOTAL =====")
-    print(f"Total Monthly Consumption: {total_consumption:.2f} kWh")
-    print(f"Total Estimated Cost: R${total_cost:.2f}")
-    print("========================")
+#print("\n===== HOUSE TOTAL =====") ""
+#print(f"Total Monthly Consumption: {total_consumption:.2f} kWh")
+#print(f"Total Estimated Cost: R${total_cost:.2f}")
+#print("========================")
 
 if __name__ == "__main__":
     main()
