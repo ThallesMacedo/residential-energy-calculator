@@ -1,5 +1,5 @@
 #Welcome to the program.
-print("Hello user of the energy consumption calculator")
+print("\nHello user of the energy consumption calculator")
 print("Let's begin the calculation\n")
 
 #Function: Validate Float values ​​for inputs.
@@ -74,6 +74,8 @@ def main():
 
         elif choise == '3':
             break
+        else:
+            print("Invalid option. Please choose 1, 2 or 3.")
             
 
 #total_consumption = sum(a["monthly_consumption"] for a in appliances)
