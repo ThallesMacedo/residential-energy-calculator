@@ -81,6 +81,29 @@ def main():
                 print(f"Total Monthly Consumption: {total_consumption:.2f} kWh")
                 print(f"Total Estimated Cost: R${total_cost:.2f}")
                 print("========================")
+
+                print("\n===== HIGHER ELECTRICITY CONSUMPTION =====")
+
+                highest_consumption = max(
+                appliances,
+                key=lambda appliance: appliance["monthly_consumption"]
+                )
+
+                print(f"Appliance: {highest_consumption['appliance_name']}")
+                print(f"Monthly Consumption: {highest_consumption['monthly_consumption']:.2f} kWh")
+
+                print("\n===== HIGHER ELECTRICITY COST =====")
+
+                highest_cost = max(
+                appliances,
+                key=lambda appliance: appliance["monthly_cost"]
+                )
+
+                print(f"Appliance: {highest_cost['appliance_name']}")
+                print(f"Highest Monthly Cost: R${highest_cost['monthly_cost']:.2f}")
+
+
+                print("========================")
                     
 
         elif choise == '3':
