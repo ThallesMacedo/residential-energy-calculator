@@ -52,7 +52,7 @@ def main():
     appliances = []  # Made List
 
     while True:
-        print('===== Energy Consumption Calculator =====\n1 - Add appliance \n2 - View report \n3 - Exit')
+        print('\n===== Energy Consumption Calculator =====\n1 - Add appliance \n2 - View report \n3 - Exit')
         choise = input('Choose an option:')
         if choise == '1':
             
@@ -67,14 +67,21 @@ def main():
             if not appliances:
                 print('\nThe list is empty.\n')
             else:
+                print("\n===== ENERGY REPORT =====")
                 for appliance in appliances:
-                    print("\n===== ENERGY REPORT =====")
                     print(f"\nAppliance: {appliance['appliance_name']}")
                     print(f"Monthly Consumption: {appliance['monthly_consumption']:.2f} kWh")
                     print(f"Monthly Cost: R${appliance['monthly_cost']:.2f}\n")
                     print("==========================\n")
-                    print("-" * 30)
-
+                    
+                    
+                total_consumption = sum(appliance["monthly_consumption"] for appliance in appliances)
+                total_cost = sum(appliance["monthly_cost"] for appliance in appliances)
+                print("\n===== HOUSE TOTAL =====")
+                print(f"Total Monthly Consumption: {total_consumption:.2f} kWh")
+                print(f"Total Estimated Cost: R${total_cost:.2f}")
+                print("========================")
+                    
 
         elif choise == '3':
             break
@@ -82,14 +89,5 @@ def main():
             print("Invalid option. Please choose 1, 2 or 3.")
             
 
-#total_consumption = sum(a["monthly_consumption"] for a in appliances)
-#total_cost = sum(a["monthly_cost"] for a in appliances)
-
-#print("\n===== HOUSE TOTAL =====") ""
-#print(f"Total Monthly Consumption: {total_consumption:.2f} kWh")
-#print(f"Total Estimated Cost: R${total_cost:.2f}")
-#print("========================")
-
 if __name__ == "__main__":
     main()
-
