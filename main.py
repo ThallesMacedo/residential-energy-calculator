@@ -20,7 +20,7 @@ def get_int_input(message):
 
 #Function: Energy consumption calculation formula
 def calculate_energy():
-    appliance_name = input("What is the name of the calculating device? ")
+    appliance_name = input("\nWhat is the name of the calculating device? ")
     power_watts = get_float_input('What is its power rating in Watts? ')
     hours_per_day = get_int_input('How many hours per day of use? ')
     days_per_month = get_int_input('How many days of use per month? ')
@@ -52,7 +52,7 @@ def main():
     appliances = []  # Made List
 
     while True:
-        print('\n===== Energy Consumption Calculator =====\n1 - Add appliance \n2 - View report \n3 - Exit')
+        print('\n===== Energy Consumption Calculator =====\n1 - Add appliance \n2 - View report \n3 - Remove appliance \n4 - Exit')
         choise = input('Choose an option:')
         if choise == '1':
             
@@ -105,11 +105,26 @@ def main():
 
                 print("========================")
                     
+        elif choise == "3":
+            if not appliances:
+                print("\nNo appliances to remove.")
+                continue
 
-        elif choise == '3':
+            for i, ordem in enumerate(appliances, start=1):
+                print(f"\n{i}: {ordem['appliance_name']} - {ordem['monthly_consumption']:.2f} KWH - R${ordem['monthly_cost']:.2f}")
+            number = int(input("\nWhich appliance should I remove?" ))
+            if 1 <= number <= len(appliances):
+                removed = appliances.pop(number-1)
+                print(f"\n{removed['appliance_name']} removed successfully.")
+            else:
+                print("\nInvalid number.")
+
+            
+
+        elif choise == '4':
             break
         else:
-            print("Invalid option. Please choose 1, 2 or 3.")
+            print("Invalid option. Please choose 1, 2, 3 or 4.")
             
 
 if __name__ == "__main__":
