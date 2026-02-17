@@ -1,3 +1,4 @@
+import json
 #Welcome to the program.
 print("\nHello user of the energy consumption calculator")
 print("Let's begin the calculation\n")
@@ -47,9 +48,18 @@ def calculate_energy():
 
     return appliance_name, monthly_consumption, monthly_cost
 
+#function: save file
+def save_data(appliances):
+    with open("appliances.json", "w") as file:
+        json.dump(appliances, file)
+
 #Function: Main
 def main():
-    appliances = []  # Made List
+    try:
+        with open("appliances.json", "r") as file:
+            appliances = json.load(file)
+    except FileNotFoundError:
+        appliances = []
 
     while True:
         print('\n===== Energy Consumption Calculator =====\n1 - Add appliance \n2 - View report \n3 - Remove appliance \n4 - Exit')
@@ -63,6 +73,8 @@ def main():
             "monthly_consumption": consumption,
             "monthly_cost": cost
                                })
+            save_data(appliances)
+
         elif choise == '2':
             if not appliances:
                 print('\nThe list is empty.\n')
@@ -112,10 +124,12 @@ def main():
 
             for i, ordem in enumerate(appliances, start=1):
                 print(f"\n{i}: {ordem['appliance_name']} - {ordem['monthly_consumption']:.2f} KWH - R${ordem['monthly_cost']:.2f}")
-            number = int(input("\nWhich appliance should I remove?" ))
+            number = get_int_input("\nWhich appliance should I remove?" )
             if 1 <= number <= len(appliances):
-                removed = appliances.pop(number-1)
-                print(f"\n{removed['appliance_name']} removed successfully.")
+                    print('Invalid input. Please enter a valid number.')
+                    removed = appliances.pop(number-1)
+                    save_data(appliances)
+                    print(f"\n{removed['appliance_name']} removed successfully.")
             else:
                 print("\nInvalid number.")
 
