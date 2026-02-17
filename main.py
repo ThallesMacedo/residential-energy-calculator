@@ -65,12 +65,16 @@ def main():
                                })
         elif choise == '2':
             if not appliances:
-                print('The list is empty.')
+                print('\nThe list is empty.\n')
             else:
                 for appliance in appliances:
+                    print("\n===== ENERGY REPORT =====")
                     print(f"\nAppliance: {appliance['appliance_name']}")
                     print(f"Monthly Consumption: {appliance['monthly_consumption']:.2f} kWh")
                     print(f"Monthly Cost: R${appliance['monthly_cost']:.2f}\n")
+                    print("==========================\n")
+                    print("-" * 30)
+
 
         elif choise == '3':
             break
