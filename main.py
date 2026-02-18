@@ -53,6 +53,115 @@ def save_data(appliances):
     with open("appliances.json", "w") as file:
         json.dump(appliances, file)
 
+#Function: Add Appliance
+def add_appliance(appliances):
+    name, consumption, cost = calculate_energy()
+
+    appliances.append({
+            "appliance_name": name,
+            "monthly_consumption": consumption,
+            "monthly_cost": cost
+                               })
+    save_data(appliances)
+
+#Function: View Report
+def view_report(appliances):
+    if not appliances:
+        print('\nThe list is empty.\n')
+        return
+
+    print("\n===== ENERGY REPORT =====")
+    for appliance in appliances:
+        print(f"\nAppliance: {appliance['appliance_name']}")
+        print(f"Monthly Consumption: {appliance['monthly_consumption']:.2f} kWh")
+        print(f"Monthly Cost: R${appliance['monthly_cost']:.2f}\n")
+        print("==========================\n")
+
+    total_consumption = sum(appliance["monthly_consumption"] for appliance in appliances)
+    total_cost = sum(appliance["monthly_cost"] for appliance in appliances)
+
+    print("\n===== HOUSE TOTAL =====")
+    print(f"Total Monthly Consumption: {total_consumption:.2f} kWh")
+    print(f"Total Estimated Cost: R${total_cost:.2f}")
+    print("========================")
+
+    print("\n===== HIGHER ELECTRICITY CONSUMPTION =====")
+
+    highest_consumption = max(
+        appliances,
+        key=lambda appliance: appliance["monthly_consumption"]
+    )
+
+    print(f"Appliance: {highest_consumption['appliance_name']}")
+    print(f"Monthly Consumption: {highest_consumption['monthly_consumption']:.2f} kWh")
+
+    print("\n===== HIGHER ELECTRICITY COST =====")
+
+    highest_cost = max(
+        appliances,
+        key=lambda appliance: appliance["monthly_cost"]
+    )
+
+    print(f"Appliance: {highest_cost['appliance_name']}")
+    print(f"Highest Monthly Cost: R${highest_cost['monthly_cost']:.2f}")
+
+    print("========================")
+
+#Function: Remove appliance
+def remove_appliance(appliances):
+    if not appliances:
+        print("\nNo appliances to remove.")
+        return
+
+    for i, ordem in enumerate(appliances, start=1):
+        print(f"\n{i}: {ordem['appliance_name']} - {ordem['monthly_consumption']:.2f} KWH - R${ordem['monthly_cost']:.2f}")
+    number = get_int_input("\nWhich appliance should I remove?" )
+    if 1 <= number <= len(appliances):
+        removed = appliances.pop(number-1)
+        save_data(appliances)
+        print(f"\n{removed['appliance_name']} removed successfully.")
+    else:
+        print("\nInvalid number.")
+
+#Function: Edit appliance
+def update_appliance(appliances):
+    if not appliances:
+        print("\nNo appliances to update.")
+        return
+
+            
+    for i, ordem in enumerate(appliances, start=1):
+        print(f"\n{i}: {ordem['appliance_name']} - {ordem['monthly_consumption']:.2f} KWH - R${ordem['monthly_cost']:.2f}")
+    numberedit = get_int_input("\nWhich device should I update?" )
+            
+    if 1 <= numberedit <= len(appliances):
+        appliance = appliances[numberedit - 1]
+        print(f"\nEditing {appliance['appliance_name']}")
+
+        # Request new values
+        new_name = input("New name: ")
+        new_power = get_float_input("New power (Watts): ")
+        new_hours = get_int_input("New hours per day: ")
+        new_days = get_int_input("New days per month: ")
+        new_price = get_float_input("New kWh price: ")
+
+        # Recalculate
+        daily = (new_power / 1000) * new_hours
+        monthly = daily * new_days
+        cost = monthly * new_price
+
+        # Update dictionary
+        appliance["appliance_name"] = new_name
+        appliance["monthly_consumption"] = monthly
+        appliance["monthly_cost"] = cost
+
+        save_data(appliances)
+
+        print("\nAppliance updated successfully!")
+
+    else:
+        print("Invalid input. Please enter a valid number.")
+
 #Function: Main
 def main():
     try:
@@ -67,113 +176,19 @@ def main():
         
         #Add appliance
         if choise == '1':
-            
-            name, consumption, cost = calculate_energy()
-
-            appliances.append({
-            "appliance_name": name,
-            "monthly_consumption": consumption,
-            "monthly_cost": cost
-                               })
-            save_data(appliances)
-
+            add_appliance(appliances)
+        
         #View report
         elif choise == '2':
-            if not appliances:
-                print('\nThe list is empty.\n')
-            else:
-                print("\n===== ENERGY REPORT =====")
-                for appliance in appliances:
-                    print(f"\nAppliance: {appliance['appliance_name']}")
-                    print(f"Monthly Consumption: {appliance['monthly_consumption']:.2f} kWh")
-                    print(f"Monthly Cost: R${appliance['monthly_cost']:.2f}\n")
-                    print("==========================\n")
-                    
-                    
-                total_consumption = sum(appliance["monthly_consumption"] for appliance in appliances)
-                total_cost = sum(appliance["monthly_cost"] for appliance in appliances)
-                print("\n===== HOUSE TOTAL =====")
-                print(f"Total Monthly Consumption: {total_consumption:.2f} kWh")
-                print(f"Total Estimated Cost: R${total_cost:.2f}")
-                print("========================")
-
-                print("\n===== HIGHER ELECTRICITY CONSUMPTION =====")
-
-                highest_consumption = max(
-                appliances,
-                key=lambda appliance: appliance["monthly_consumption"]
-                )
-
-                print(f"Appliance: {highest_consumption['appliance_name']}")
-                print(f"Monthly Consumption: {highest_consumption['monthly_consumption']:.2f} kWh")
-
-                print("\n===== HIGHER ELECTRICITY COST =====")
-
-                highest_cost = max(
-                appliances,
-                key=lambda appliance: appliance["monthly_cost"]
-                )
-
-                print(f"Appliance: {highest_cost['appliance_name']}")
-                print(f"Highest Monthly Cost: R${highest_cost['monthly_cost']:.2f}")
-
-
-                print("========================")
+           view_report(appliances)
 
         #Remove appliance          
         elif choise == "3":
-            if not appliances:
-                print("\nNo appliances to remove.")
-                continue
-
-            for i, ordem in enumerate(appliances, start=1):
-                print(f"\n{i}: {ordem['appliance_name']} - {ordem['monthly_consumption']:.2f} KWH - R${ordem['monthly_cost']:.2f}")
-            number = get_int_input("\nWhich appliance should I remove?" )
-            if 1 <= number <= len(appliances):
-                    removed = appliances.pop(number-1)
-                    save_data(appliances)
-                    print(f"\n{removed['appliance_name']} removed successfully.")
-            else:
-                print("\nInvalid number.")
+            remove_appliance(appliances)
 
         #Edit appliance
         elif choise == "4":
-            if not appliances:
-                print("\nNo appliances to update.")
-                continue
-
-            
-            for i, ordem in enumerate(appliances, start=1):
-                print(f"\n{i}: {ordem['appliance_name']} - {ordem['monthly_consumption']:.2f} KWH - R${ordem['monthly_cost']:.2f}")
-            numberedit = get_int_input("\nWhich device should I update?" )
-            
-            if 1 <= numberedit <= len(appliances):
-                appliance = appliances[numberedit - 1]
-                print(f"\nEditing {appliance['appliance_name']}")
-
-                # Request new values
-                new_name = input("New name: ")
-                new_power = get_float_input("New power (Watts): ")
-                new_hours = get_int_input("New hours per day: ")
-                new_days = get_int_input("New days per month: ")
-                new_price = get_float_input("New kWh price: ")
-
-                # Recalculate
-                daily = (new_power / 1000) * new_hours
-                monthly = daily * new_days
-                cost = monthly * new_price
-
-                # Update dictionary
-                appliance["appliance_name"] = new_name
-                appliance["monthly_consumption"] = monthly
-                appliance["monthly_cost"] = cost
-
-                save_data(appliances)
-
-                print("\nAppliance updated successfully!")
-
-            else:
-                print("Invalid input. Please enter a valid number.") 
+            update_appliance(appliances) 
 
         #Exit
         elif choise == '5':
