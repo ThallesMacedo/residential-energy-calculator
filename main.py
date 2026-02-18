@@ -62,8 +62,10 @@ def main():
         appliances = []
 
     while True:
-        print('\n===== Energy Consumption Calculator =====\n1 - Add appliance \n2 - View report \n3 - Remove appliance \n4 - Exit')
+        print('\n===== Energy Consumption Calculator =====\n1 - Add appliance \n2 - View report \n3 - Remove appliance \n4 - Edit appliance \n5 - Exit')
         choise = input('Choose an option:')
+        
+        #Add appliance
         if choise == '1':
             
             name, consumption, cost = calculate_energy()
@@ -75,6 +77,7 @@ def main():
                                })
             save_data(appliances)
 
+        #View report
         elif choise == '2':
             if not appliances:
                 print('\nThe list is empty.\n')
@@ -116,7 +119,8 @@ def main():
 
 
                 print("========================")
-                    
+
+        #Remove appliance          
         elif choise == "3":
             if not appliances:
                 print("\nNo appliances to remove.")
@@ -126,17 +130,56 @@ def main():
                 print(f"\n{i}: {ordem['appliance_name']} - {ordem['monthly_consumption']:.2f} KWH - R${ordem['monthly_cost']:.2f}")
             number = get_int_input("\nWhich appliance should I remove?" )
             if 1 <= number <= len(appliances):
-                    print('Invalid input. Please enter a valid number.')
                     removed = appliances.pop(number-1)
                     save_data(appliances)
                     print(f"\n{removed['appliance_name']} removed successfully.")
             else:
                 print("\nInvalid number.")
 
-            
+        #Edit appliance
+        elif choise == "4":
+            if not appliances:
+                print("\nNo appliances to update.")
+                continue
 
-        elif choise == '4':
+            
+            for i, ordem in enumerate(appliances, start=1):
+                print(f"\n{i}: {ordem['appliance_name']} - {ordem['monthly_consumption']:.2f} KWH - R${ordem['monthly_cost']:.2f}")
+            numberedit = get_int_input("\nWhich device should I update?" )
+            
+            if 1 <= numberedit <= len(appliances):
+                appliance = appliances[numberedit - 1]
+                print(f"\nEditing {appliance['appliance_name']}")
+
+                # Request new values
+                new_name = input("New name: ")
+                new_power = get_float_input("New power (Watts): ")
+                new_hours = get_int_input("New hours per day: ")
+                new_days = get_int_input("New days per month: ")
+                new_price = get_float_input("New kWh price: ")
+
+                # Recalculate
+                daily = (new_power / 1000) * new_hours
+                monthly = daily * new_days
+                cost = monthly * new_price
+
+                # Update dictionary
+                appliance["appliance_name"] = new_name
+                appliance["monthly_consumption"] = monthly
+                appliance["monthly_cost"] = cost
+
+                save_data(appliances)
+
+                print("\nAppliance updated successfully!")
+
+            else:
+                print("Invalid input. Please enter a valid number.") 
+
+        #Exit
+        elif choise == '5':
             break
+        
+        #validation menu
         else:
             print("Invalid option. Please choose 1, 2, 3 or 4.")
             
