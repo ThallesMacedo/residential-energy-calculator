@@ -1,4 +1,5 @@
 import json
+from services import generate_graphs
 from services import (
     add_appliance,
     view_report,
@@ -17,7 +18,7 @@ def main():
     appliances = load_data()
 
     while True:
-        print('\n===== Energy Consumption Calculator =====\n1 - Add appliance \n2 - View report \n3 - Remove appliance \n4 - Edit appliance \n5 - Exit')
+        print('\n===== Energy Consumption Calculator =====\n1 - Add appliance \n2 - View report \n3 - Remove appliance \n4 - Edit appliance \n5 - Generate graphs\n6 - Exit')
         choise = input('Choose an option:')
         
         #Add appliance
@@ -36,8 +37,12 @@ def main():
         elif choise == "4":
             update_appliance(appliances) 
 
+        #Graphs
+        elif choise == "5":
+            generate_graphs(appliances)
+
         #Exit
-        elif choise == '5':
+        elif choise == '6':
             break
         
         #validation menu

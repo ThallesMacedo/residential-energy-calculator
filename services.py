@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 from utils import get_float_input, get_int_input
 from storage import save_data
 
@@ -139,3 +140,32 @@ def update_appliance(appliances):
 
     else:
         print("Invalid input. Please enter a valid number.")
+
+def generate_graphs(appliances):
+    if not appliances:
+        print("\nNo appliances available to generate graphs.")
+        return
+
+    names = [appliance["appliance_name"] for appliance in appliances]
+    consumptions = [appliance["monthly_consumption"] for appliance in appliances]
+    costs = [appliance["monthly_cost"] for appliance in appliances]
+
+    # Graph 1 - Energy Consumption
+    plt.figure()
+    plt.bar(names, consumptions)
+    plt.title("Monthly Energy Consumption (kWh)")
+    plt.xlabel("Appliances")
+    plt.ylabel("Consumption (kWh)")
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.show()
+
+    # Graph 2 - Monthly Cost
+    plt.figure()
+    plt.bar(names, costs)
+    plt.title("Monthly Energy Cost (R$)")
+    plt.xlabel("Appliances")
+    plt.ylabel("Cost (R$)")
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.show()
